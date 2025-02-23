@@ -42,7 +42,6 @@ app.post('/api/loans', (req, res) => {
         id: (loans[token] ? loans[token].length : 0) + 1, // Incremental ID for each loan under the same token
         token,
         name,
-        email,
         phoneNumber,
         address,
         coborrowerName,
