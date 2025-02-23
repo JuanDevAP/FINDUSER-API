@@ -32,7 +32,7 @@ let loans = readLoansFromFile();
 
 // API Endpoints
 app.post('/api/loans', (req, res) => {
-    const { token, name, phoneNumber, address, coborrowerName, piDue, paymentDueDate, pastDue, escrowDue, totalPaymentDue } = req.body;
+    const { token, name, email, phoneNumber, address, coborrowerName, piDue, paymentDueDate, pastDue, escrowDue, totalPaymentDue } = req.body;
 
     if (!token || !name || !phoneNumber || !address || !coborrowerName || !piDue || !paymentDueDate || !pastDue || !escrowDue || !totalPaymentDue) {
         return res.status(400).json({ error: 'All fields are required.' });
