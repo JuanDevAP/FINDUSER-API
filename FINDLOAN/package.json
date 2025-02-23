@@ -1,0 +1,21 @@
+{
+  "name": "express-payments-api",
+  "version": "1.0.0",
+  "description": "A simple Express API for handling payments",
+  "main": "loanserver.js",
+  "scripts": {
+    "start": "nodemon loanserver.js",
+    "watch": "nodemon loanserver.js --ext js,html"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

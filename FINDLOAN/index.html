@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Submission</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Loan Submission</h2>
+        <form id="loanForm">
+            <input type="text" id="token" placeholder="Enter Token" required>
+            <input type="text" id="name" placeholder="Enter Name" required>
+            <input type="email" id="email" placeholder="Enter Email" required>
+            <input type="text" id="phoneNumber" placeholder="Enter Phone Number" required>
+            <input type="text" id="address" placeholder="Enter Address" required>
+            <input type="text" id="coborrowerName" placeholder="Enter Co-borrower Name" required>
+            <input type="number" id="piDue" placeholder="P&I Due" required>
+            <input type="date" id="paymentDueDate" placeholder="Payment Due Date" required>
+            <input type="number" id="pastDue" placeholder="Past Due" required>
+            <input type="number" id="escrowDue" placeholder="Escrow Due" required>
+            <input type="number" id="totalPaymentDue" placeholder="Total Payment Due" required>
+            <button type="submit">Submit Loan</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to read query parameters and fill the form fields
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const name = urlParams.get('name');
+            const email = urlParams.get('email');
+
+            if (token) {
+                document.getElementById('token').value = token;
+            }
+            if (name) {
+                document.getElementById('name').value = name;
+            }
+            if (email) {
+                document.getElementById('email').value = email;
+            }
+        });
+
+        document.getElementById('loanForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const token = document.getElementById('token').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const address = document.getElementById('address').value;
+            const coborrowerName = document.getElementById('coborrowerName').value;
+            const piDue = document.getElementById('piDue').value;
+            const paymentDueDate = document.getElementById('paymentDueDate').value;
+            const pastDue = document.getElementById('pastDue').value;
+            const escrowDue = document.getElementById('escrowDue').value;
+            const totalPaymentDue = document.getElementById('totalPaymentDue').value;
+
+            try {
+                const response = await fetch('http://localhost:3006/api/loans', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        token,
+                        name,
+                        email,
+                        phoneNumber,
+                        address,
+                        coborrowerName,
+                        piDue,
+                        paymentDueDate,
+                        pastDue,
+                        escrowDue,
+                        totalPaymentDue
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.error}`);
+                    return;
+                }
+
+                alert('Loan submitted successfully!');
+                document.getElementById('loanForm').reset();
+            } catch (error) {
+                console.error('Error submitting loan:', error);
+                alert('Error submitting loan. Please try again.');
+            }
+        });
+    </script>
+
+</body>
+
+</html>
