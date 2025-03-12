@@ -32,16 +32,20 @@ let loans = readLoansFromFile();
 
 // API Endpoints
 app.post('/api/loans', (req, res) => {
-    const { token, name, email, phoneNumber, address, coborrowerName, piDue, paymentDueDate, pastDue, escrowDue, totalPaymentDue } = req.body;
+    const { token, firstname, name, email, phoneNumber, address, coborrowerName, piDue, paymentDueDate, pastDue, escrowDue, totalPaymentDue } = req.body;
 
-    if (!token || !name || !phoneNumber || !address || !coborrowerName || !piDue || !paymentDueDate || !pastDue || !escrowDue || !totalPaymentDue) {
+    if (!token || !firstname || !name || !phoneNumber || !address || !coborrowerName || !piDue || !paymentDueDate || !pastDue || !escrowDue || !totalPaymentDue) {
         return res.status(400).json({ error: 'All fields are required.' });
     }
+
+    const fullname = `${firstname} ${name}`; // Create fullname from firstname and name
 
     const loan = {
         id: (loans[token] ? loans[token].length : 0) + 1, // Incremental ID for each loan under the same token
         token,
+        firstname,
         name,
+        fullname,
         email,
         phoneNumber,
         address,
